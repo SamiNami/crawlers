@@ -3,7 +3,7 @@
 /.vagrant
 /scrapy.iml
 *.pyc
-*.log
+result.json
 _trial_temp*
 dropin.cache
 docs/build
