@@ -12,7 +12,7 @@ class SubjectsSpider(Spider):
 
     def parse(self, response):
         if self.subject:
-            subject_url = response.xpath('//*[contains(@title, ' + self.subject + ')]/@href').extract_first()
+            subject_url = response.xpath('//*[contains(@title, "' + self.subject + '")]/@href').extract_first()
             yield Request(response.urljoin(subject_url), callback=self.parse_subject)
         else:
             self.logger.info("Scraping all subjects")
@@ -36,4 +36,7 @@ class SubjectsSpider(Spider):
                 "course_name": course_name,
                 "absolute_course_url": absolute_course_url,
             }
-    
+
+        next_page = response.xpath('//*[@rel="next"]/@href').extract_first()
+        absolute_next_page = response.urljoin(next_page)
+        yield Request(absolute_next_page, callback=self.parse_subject)
